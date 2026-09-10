@@ -190,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Students\Commands\DeleteStudentCommand.cs" />
-    <Compile Include="Application\Students\DTOs\StudentDTO.cs" />
     <Compile Include="Application\Students\DTOs\StudentViewModel.cs" />
     <Compile Include="Application\Students\Handlers\DeleteStudentHandler.cs" />
     <Compile Include="Application\Students\Handlers\GetStudantByIdHandler.cs" />
