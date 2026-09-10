@@ -1,4 +1,5 @@
 ﻿using EscolaTeste.Application.Students;
+using EscolaTeste.Application.Students.Commands;
 using EscolaTeste.Filters;
 using EscolaTeste.Requests;
 using MediatR;
@@ -17,9 +18,14 @@ namespace EscolaTeste.Controllers
             _mediator = mediator;
         }
         // GET api/<controller>
-        public IEnumerable<string> Get([FromUri] StudentListRequest request)
+        [HttpGet]
+        [Route("", Name = "GetStudents")]
+        public async Task<IHttpActionResult> Get([FromUri] GetStudantsQuery request)
         {
-            return new string[] { "value1", "value2" };
+            if(request is null)
+                request = new GetStudantsQuery();
+            var response = await _mediator.Send(request);
+            return Ok(response);
         }
 
         // GET api/<controller>/5
@@ -32,8 +38,7 @@ namespace EscolaTeste.Controllers
 
         [HttpPost]
         [Route(Name = "PostStudent")]
-        [ValidateModelAttribute]
-        public async Task<IHttpActionResult> Post([FromBody] StudentRegisterCommand command)
+        public async Task<IHttpActionResult> Post([FromBody] RegisterStudentCommand command)
         {
             var newId = await _mediator.Send(command);
             return Created(Url.Route("GetStudentById", new { id = newId }), newId);
@@ -41,10 +46,9 @@ namespace EscolaTeste.Controllers
 
         [HttpPut]
         [Route("{id:int}", Name = "PutStudent")]
-        [ValidateModelAttribute]
         public async Task<IHttpActionResult> Put([Required] int id, [FromBody] StudantUpdateRequest request)
         {
-            var command = new StudentUpdateCommand
+            var command = new UpdateStudentCommand
             {
                 Id = id,
                 Nome = request.Nome,

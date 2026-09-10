@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using EscolaTeste.Application.Students.Commands;
 using EscolaTeste.Infrastructure.Database.Interfaces;
 using MediatR;
 using Serilog;
@@ -7,9 +8,9 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EscolaTeste.Application.Students
+namespace EscolaTeste.Application.Students.Handlers
 {
-    public class StudentRegisterHandler : IRequestHandler<StudentRegisterCommand, int>
+    public class RegisterStudentHandler : IRequestHandler<RegisterStudentCommand, int>
     {
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly ILogger _logger;
@@ -20,13 +21,13 @@ namespace EscolaTeste.Application.Students
             SELECT CAST(SCOPE_IDENTITY() as int);
         ";
 
-        public StudentRegisterHandler(IDbConnectionFactory connectionFactory, ILogger logger)
+        public RegisterStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger)
         {
             _connectionFactory = connectionFactory;
             _logger = logger;
         }
 
-        public async Task<int> Handle(StudentRegisterCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(RegisterStudentCommand request, CancellationToken cancellationToken)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {

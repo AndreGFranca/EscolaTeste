@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace EscolaTeste.Application.Students
+namespace EscolaTeste.Application.Students.Commands
 {
-    public class StudentRegisterCommand : IRequest<int>
+    public class RegisterStudentCommand : IRequest<int>
     {
         [Required(ErrorMessage = "O nome é obrigatório")]
         [MaxLength(120, ErrorMessage = "O nome não pode exceder 120 caracteres")]
