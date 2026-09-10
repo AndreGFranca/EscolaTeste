@@ -1,4 +1,4 @@
-﻿using EscolaTeste.Infrastructure.Database.Interfaces;
+﻿using EscolaTeste.Domain.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
 

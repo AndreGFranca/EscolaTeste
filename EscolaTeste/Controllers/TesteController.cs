@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using EscolaTeste.Infrastructure.Database.Interfaces;
+using EscolaTeste.Domain.Interfaces;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
