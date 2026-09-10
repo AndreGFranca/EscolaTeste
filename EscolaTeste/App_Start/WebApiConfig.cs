@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using EscolaTeste.Filters;
+using System.Web.Http;
 
 namespace EscolaTeste
 {
@@ -8,7 +9,7 @@ namespace EscolaTeste
         {
             // Rotas de API Web
             config.MapHttpAttributeRoutes();
-
+            config.Filters.Add(new ValidateModelAttribute());
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
