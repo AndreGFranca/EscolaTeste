@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace EscolaTeste.Infrastructure.Database.Interfaces
+namespace EscolaTeste.Domain.Interfaces
 {
     public interface IDbConnectionFactory
     {

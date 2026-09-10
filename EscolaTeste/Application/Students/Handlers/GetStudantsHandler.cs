@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using EscolaTeste.Application.Students.DTOs;
-using EscolaTeste.Infrastructure.Database.Interfaces;
+using EscolaTeste.Domain.Interfaces;
 using EscolaTeste.Responses.Commom;
 using MediatR;
 using Serilog;

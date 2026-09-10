@@ -191,12 +191,14 @@
   <ItemGroup>
     <Compile Include="Application\Students\DTOs\StudentDTO.cs" />
     <Compile Include="Application\Students\DTOs\StudentViewModel.cs" />
+    <Compile Include="Application\Students\Handlers\GetStudantByIdHandler.cs" />
     <Compile Include="Application\Students\Handlers\GetStudantsHandler.cs" />
     <Compile Include="Application\Students\Queries\GetStudantsQuery.cs" />
     <Compile Include="Application\Students\Commands\RegisterStudentCommand.cs" />
     <Compile Include="Application\Students\Handlers\RegisterStudentHandler.cs" />
     <Compile Include="Application\Students\Commands\UpdateStudentCommand.cs" />
     <Compile Include="Application\Students\Handlers\UpdateStudentHandler.cs" />
+    <Compile Include="Application\Students\Queries\GetStudentByIdQuery.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TesteController.cs" />
@@ -206,7 +208,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Configuration\DependencyInjectionConfig.cs" />
-    <Compile Include="Infrastructure\Database\Interfaces\IDbConnectionFactory.cs" />
+    <Compile Include="Domain\Interfaces\IDbConnectionFactory.cs" />
     <Compile Include="Infrastructure\Database\SqlConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\Commom\PaginetedResponse.cs" />

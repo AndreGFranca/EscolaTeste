@@ -2,8 +2,8 @@
 using Autofac.Features.Variance;
 using Autofac.Integration.WebApi;
 using EscolaTeste.Application.Students;
+using EscolaTeste.Domain.Interfaces;
 using EscolaTeste.Infrastructure.Database;
-using EscolaTeste.Infrastructure.Database.Interfaces;
 using MediatR;
 using Serilog;
 using System;

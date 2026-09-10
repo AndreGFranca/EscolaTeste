@@ -1,5 +1,6 @@
 ﻿using EscolaTeste.Application.Students;
 using EscolaTeste.Application.Students.Commands;
+using EscolaTeste.Application.Students.Queries;
 using EscolaTeste.Filters;
 using EscolaTeste.Requests;
 using MediatR;
@@ -17,23 +18,29 @@ namespace EscolaTeste.Controllers
         public StudentController(IMediator mediator) {
             _mediator = mediator;
         }
-        // GET api/<controller>
+
         [HttpGet]
-        [Route("", Name = "GetStudents")]
+        [Route(Name = "GetStudents")]
         public async Task<IHttpActionResult> Get([FromUri] GetStudantsQuery request)
         {
             if(request is null)
                 request = new GetStudantsQuery();
             var response = await _mediator.Send(request);
+            if(response.TotalItens == 0)
+                return NotFound();
             return Ok(response);
         }
 
-        // GET api/<controller>/5
+
         [HttpGet]
         [Route("{id:int}", Name = "GetStudentById")]
-        public string Get(int id)
+        public async Task<IHttpActionResult> Get(int id)
         {
-            return "value";
+            var request = new GetStudentByIdQuery { Id = id };
+            var student = await _mediator.Send(request);
+            if(student is null)
+                return NotFound();
+            return Ok(student);
         }
 
         [HttpPost]
@@ -56,6 +63,7 @@ namespace EscolaTeste.Controllers
                 DataNascimento = request.DataNascimento
             };
 
+
             var updated = await _mediator.Send(command);
             if (!updated)
             {
@@ -64,7 +72,6 @@ namespace EscolaTeste.Controllers
             return Ok();
         }
 
-        // DELETE api/<controller>/5
         public void Delete(int id)
         {
         }

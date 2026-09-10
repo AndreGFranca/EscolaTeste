@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using EscolaTeste.Application.Students.Commands;
-using EscolaTeste.Infrastructure.Database.Interfaces;
+using EscolaTeste.Domain.Interfaces;
 using MediatR;
 using Serilog;
 using System;
