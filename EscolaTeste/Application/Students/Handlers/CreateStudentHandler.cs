@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using EscolaTeste.Application.Students.Commands;
+using EscolaTeste.Domain.Commom;
 using EscolaTeste.Domain.Interfaces;
 using MediatR;
 using Serilog;
@@ -20,11 +21,13 @@ namespace EscolaTeste.Application.Students.Handlers
 
             SELECT CAST(SCOPE_IDENTITY() as int);
         ";
-
-        public CreateStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger)
+        private readonly IRedisCacheService _redisCacheService;
+        private readonly TimeSpan ttl = new TimeSpan(hours: 0, minutes: 10, seconds: 0);
+        public CreateStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger, IRedisCacheService redisCacheService)
         {
             _connectionFactory = connectionFactory;
             _logger = logger;
+            _redisCacheService = redisCacheService;
         }
 
         public async Task<int> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
@@ -52,6 +55,7 @@ namespace EscolaTeste.Application.Students.Handlers
                             throw new Exception("Registro não inserido.");
                         tran.Commit();
                         _logger.Information("Novo aluno criado com ID {newId}", newId);
+                        _redisCacheService.SetNewVersionAsync(RedisKeys.Version("student")).Wait();
                         return newId;
                     }
                     catch (Exception ex)

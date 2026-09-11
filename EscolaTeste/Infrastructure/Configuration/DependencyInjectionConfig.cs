@@ -1,11 +1,12 @@
 ﻿using Autofac;
 using Autofac.Features.Variance;
 using Autofac.Integration.WebApi;
-using EscolaTeste.Application.Students;
 using EscolaTeste.Domain.Interfaces;
 using EscolaTeste.Infrastructure.Database;
+using EscolaTeste.Infrastructure.Services;
 using MediatR;
 using Serilog;
+using StackExchange.Redis;
 using System;
 using System.Configuration;
 using System.Web.Http;
@@ -21,6 +22,7 @@ namespace EscolaTeste.Infrastructure.Configuration
             // Controllers
             builder.RegisterApiControllers(typeof(WebApiApplication).Assembly);
 
+            #region Logging
             Log.Logger = new LoggerConfiguration()
                     .MinimumLevel.Debug()
                     .WriteTo.Console()
@@ -28,16 +30,9 @@ namespace EscolaTeste.Infrastructure.Configuration
                     .CreateLogger();
 
             builder.RegisterInstance(Log.Logger).As<ILogger>().SingleInstance();
+            #endregion
 
-            //builder.Register((c, p) =>
-            //{
-            //    // Recupera o tipo da classe que está pedindo o logger (o "pai" no grafo de dependências)
-            //    var targetType = p.TypedAs<Type>();
-
-            //    // Se conseguir descobrir o tipo, cria o logger com o contexto correto
-            //    return targetType != null ? Log.Logger.ForContext(targetType) : Log.Logger;
-            //}).As<Serilog.ILogger>();
-
+            #region Mediator
             builder.RegisterSource(new ContravariantRegistrationSource());
 
             builder.RegisterType<Mediator>()
@@ -59,7 +54,9 @@ namespace EscolaTeste.Infrastructure.Configuration
             builder.RegisterAssemblyTypes(assembly)
                 .AsClosedTypesOf(typeof(INotificationHandler<>))
                 .AsImplementedInterfaces();
+            #endregion
 
+            #region Database
             // Database
             string connectionString = ConfigurationManager.ConnectionStrings["EscolaTesteDb"].ConnectionString;
 
@@ -67,7 +64,21 @@ namespace EscolaTeste.Infrastructure.Configuration
                 .As<IDbConnectionFactory>()
                 .WithParameter("connectionString", connectionString)
                 .InstancePerRequest();
+            #endregion
 
+            #region Cache
+            string redisConnectionString = ConfigurationManager.ConnectionStrings["Redis"].ConnectionString;
+            var redisConnection = ConnectionMultiplexer.Connect(redisConnectionString);
+
+            builder.RegisterInstance(redisConnection)
+                   .As<IConnectionMultiplexer>()
+                   .SingleInstance();
+
+            builder.RegisterType<RedisCacheService>()
+                   .As<IRedisCacheService>()
+                   .SingleInstance();
+
+            #endregion
             var container = builder.Build();
 
             GlobalConfiguration.Configuration.DependencyResolver =
