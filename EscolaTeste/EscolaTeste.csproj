@@ -198,8 +198,8 @@
     <Compile Include="Application\Students\Handlers\GetStudantByIdHandler.cs" />
     <Compile Include="Application\Students\Handlers\GetStudantsHandler.cs" />
     <Compile Include="Application\Students\Queries\GetStudantsQuery.cs" />
-    <Compile Include="Application\Students\Commands\RegisterStudentCommand.cs" />
-    <Compile Include="Application\Students\Handlers\RegisterStudentHandler.cs" />
+    <Compile Include="Application\Students\Commands\CreateStudentCommand.cs" />
+    <Compile Include="Application\Students\Handlers\CreateStudentHandler.cs" />
     <Compile Include="Application\Students\Commands\UpdateStudentCommand.cs" />
     <Compile Include="Application\Students\Handlers\UpdateStudentHandler.cs" />
     <Compile Include="Application\Students\Queries\GetStudentByIdQuery.cs" />
@@ -231,6 +231,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Application\Enrollment\Commands\" />
     <Folder Include="App_Data\" />
     <Folder Include="Infrastructure\Interfaces\" />
     <Folder Include="Models\" />
