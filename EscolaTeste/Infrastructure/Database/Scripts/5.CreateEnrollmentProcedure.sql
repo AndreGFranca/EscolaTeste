@@ -15,6 +15,7 @@ BEGIN
     SET NOCOUNT ON;
 
     DECLARE @VagasDisponiveis INT;
+    DECLARE @MatriculaCriada INT;
 
     BEGIN TRY
         BEGIN TRANSACTION;
@@ -76,7 +77,7 @@ BEGIN
             @AlunoId,
             @TurmaId
         );
-
+        SET @MatriculaCriada = @@IDENTITY;
         -- Atualiza quantidade de vagas
         UPDATE dbo.Turma
         SET VagasDisponiveis = VagasDisponiveis - 1
@@ -86,7 +87,8 @@ BEGIN
 
         SELECT
             1 AS Success,
-            'Aluno matriculado com sucesso.' AS Message;
+            'Aluno matriculado com sucesso.' AS Message,
+            @MatriculaCriada AS EnrollmentId;
     END TRY
     BEGIN CATCH
 
