@@ -186,6 +186,7 @@
     <Content Include="Global.asax" />
     <Content Include="Infrastructure\Database\Scripts\2.CreateViewAlunosAtivos.sql" />
     <Content Include="Infrastructure\Database\Scripts\1.script-banco.sql" />
+    <Content Include="Infrastructure\Database\Scripts\5.CreateEnrollmentProcedure.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +218,7 @@
     <Compile Include="Infrastructure\Configuration\DependencyInjectionConfig.cs" />
     <Compile Include="Domain\Interfaces\IDbConnectionFactory.cs" />
     <Content Include="Infrastructure\Database\Scripts\3.CreateTurmaView.sql" />
+    <Content Include="Infrastructure\Database\Scripts\4.AddConstraintMatricula.sql" />
     <Compile Include="Infrastructure\Database\SqlConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\Commom\PaginetedRequest.cs" />
