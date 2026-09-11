@@ -1,7 +1,9 @@
 ﻿using Dapper;
 using EscolaTeste.Application.Students.Commands;
+using EscolaTeste.Domain.Commom;
 using EscolaTeste.Domain.Entities;
 using EscolaTeste.Domain.Interfaces;
+using EscolaTeste.Infrastructure.Services;
 using MediatR;
 using Serilog;
 using System;
@@ -18,17 +20,17 @@ namespace EscolaTeste.Application.Students.Handlers
     {
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly ILogger _logger;
-
+        private readonly IRedisCacheService _redisCacheService;
+        private const string RedisKeyPrefix = "student";
         private const string _sqlUpdate = @"
                             UPDATE dbo.Aluno 
                             SET Nome = @Nome, Email = @Email, DataNascimento = @DataNascimento 
                             WHERE Id = @Id;";
-        public UpdateStudentHandler(
-            IDbConnectionFactory connectionFactory,
-            ILogger logger)
+        public UpdateStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger, IRedisCacheService redisCacheService)
         {
             _connectionFactory = connectionFactory;
             _logger = logger;
+            _redisCacheService = redisCacheService;
         }
 
         public async Task<bool> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
@@ -57,6 +59,7 @@ namespace EscolaTeste.Application.Students.Handlers
 
                         transaction.Commit();
                         _logger.Information("Aluno {StudentId} atualizado com sucesso.", request.Id);
+                        _redisCacheService.SetNewVersionAsync(RedisKeys.Version(RedisKeyPrefix)).Wait();
                         return true;
                     }
                     catch (Exception ex)

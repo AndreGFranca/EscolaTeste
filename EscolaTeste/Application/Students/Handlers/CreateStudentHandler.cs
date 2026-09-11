@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using EscolaTeste.Application.Students.Commands;
+using EscolaTeste.Domain.Commom;
 using EscolaTeste.Domain.Interfaces;
 using MediatR;
 using Serilog;
@@ -14,17 +15,19 @@ namespace EscolaTeste.Application.Students.Handlers
     {
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly ILogger _logger;
+        private readonly IRedisCacheService _redisCacheService;
         private const string _insertStudentQuery = @"
             INSERT INTO dbo.Aluno (Nome, Email, DataNascimento, Ativo)
             VALUES (@Nome, @Email, @DataNascimento, @Ativo);
 
             SELECT CAST(SCOPE_IDENTITY() as int);
         ";
-
-        public CreateStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger)
+        private const string RedisKeyPrefix = "student";
+        public CreateStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger, IRedisCacheService redisCacheService)
         {
             _connectionFactory = connectionFactory;
             _logger = logger;
+            _redisCacheService = redisCacheService;
         }
 
         public async Task<int> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
@@ -52,6 +55,7 @@ namespace EscolaTeste.Application.Students.Handlers
                             throw new Exception("Registro não inserido.");
                         tran.Commit();
                         _logger.Information("Novo aluno criado com ID {newId}", newId);
+                        _redisCacheService.SetNewVersionAsync(RedisKeys.Version(RedisKeyPrefix)).Wait();
                         return newId;
                     }
                     catch (Exception ex)

@@ -1,12 +1,16 @@
 ﻿using Dapper;
 using EscolaTeste.Application.Classes.Queries;
 using EscolaTeste.Application.ClassGroup.DTOs;
+using EscolaTeste.Application.Commom;
+using EscolaTeste.Application.Students.DTOs;
+using EscolaTeste.Domain.Commom;
 using EscolaTeste.Domain.Interfaces;
 using EscolaTeste.Responses.Commom;
 using MediatR;
 using Serilog;
 using System;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,6 +21,9 @@ namespace EscolaTeste.Application.ClassGroup.Handlers
 
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly ILogger _logger;
+        private readonly IRedisCacheService _redisCacheService;
+        private readonly TimeSpan ttl = new TimeSpan(hours: 0, minutes: 10, seconds: 0);
+        private const string RedisKeyPrefix = "classgroup";
 
         private const string BaseSql = @"
             SELECT
@@ -33,13 +40,38 @@ namespace EscolaTeste.Application.ClassGroup.Handlers
             FROM dbo.vw_Turma
             WHERE 1=1
         ";
-        public GetClassGroupHandler(IDbConnectionFactory connectionFactory, ILogger logger)
+        public GetClassGroupHandler(IDbConnectionFactory connectionFactory, ILogger logger, IRedisCacheService redisCacheService)
         {
             _connectionFactory = connectionFactory;
             _logger = logger;
+            _redisCacheService = redisCacheService;
         }
         public async Task<PaginetedResponse<ClassGroupViewModel>> Handle(GetClassGroupQuery request, CancellationToken cancellationToken)
         {
+            var parameters = new
+            {
+                Nome = $"%{request.Nome}%",
+                Periodo = request.Periodo,
+                VagasTotalMin = request.VagasTotalMin,
+                VagasTotalMax = request.VagasTotalMax,
+                VagasDisponiveisMin = request.VagasDisponiveisMin,
+                VagasDisponiveisMax = request.VagasDisponiveisMax,
+                Offset = (request.Pagina - 1) * request.TamanhoPagina,
+                PageSize = request.TamanhoPagina
+            };
+
+            var filterJsonToText = JsonSerializer.Serialize(parameters);
+
+            var hash = RedisAux.MakeHash(filterJsonToText);
+
+            var version = await _redisCacheService.GetAsync<long>(RedisKeys.Version(RedisKeyPrefix));
+            var cache = await _redisCacheService.GetAsync<PaginetedResponse<ClassGroupViewModel>>(RedisKeys.ClassGroup(hash, version));
+            if (cache != null)
+            {
+                _logger.Information("Consulta de turmas realizada. Total de itens: {TotalItems}", cache.TotalItens);
+                return cache;
+            }
+
             var result = new PaginetedResponse<ClassGroupViewModel>
             {
                 Pagina = request.Pagina,
@@ -87,12 +119,6 @@ namespace EscolaTeste.Application.ClassGroup.Handlers
             {
                 using (var connection = _connectionFactory.CreateConnection())
                 {
-                    var parameters = new
-                    {
-                        Nome = $"%{request.Nome}%",
-                        Offset = (request.Pagina - 1) * request.TamanhoPagina,
-                        PageSize = request.TamanhoPagina
-                    };
 
                     using (var multi = await connection.QueryMultipleAsync(new CommandDefinition(fullSql.ToString(), parameters, cancellationToken: cancellationToken)))
                     {
@@ -100,7 +126,7 @@ namespace EscolaTeste.Application.ClassGroup.Handlers
                         result.Itens = await multi.ReadAsync<ClassGroupViewModel>();
                         result.TotalPaginas = (int)Math.Ceiling((double)result.TotalItens / request.TamanhoPagina);
                     }
-
+                    await _redisCacheService.SetAsync(RedisKeys.ClassGroup(hash, version), result, ttl);
                     _logger.Information("Consulta de turmas realizada. Total de itens: {TotalItems}", result.TotalItens);
                     return result;
                 }

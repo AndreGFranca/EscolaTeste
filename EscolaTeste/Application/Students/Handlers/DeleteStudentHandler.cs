@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using EscolaTeste.Application.Students.Commands;
+using EscolaTeste.Domain.Commom;
 using EscolaTeste.Domain.Interfaces;
 using MediatR;
 using Serilog;
@@ -14,14 +15,18 @@ namespace EscolaTeste.Application.Students.Handlers
     {
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly ILogger _logger;
+        private readonly IRedisCacheService _redisCacheService;
+        private const string RedisKeyPrefix = "student";
 
         private const string DeleteStudentSql = @"
             UPDATE dbo.Aluno SET Ativo = 0 WHERE Id = @Id AND Ativo = 1;
         ";
-        public DeleteStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger)
+
+        public DeleteStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger, IRedisCacheService redisCacheService)
         {
             _connectionFactory = connectionFactory;
             _logger = logger;
+            _redisCacheService = redisCacheService;
         }
 
         public async Task<bool> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
@@ -50,6 +55,7 @@ namespace EscolaTeste.Application.Students.Handlers
                         }
                         transaction.Commit();
                         _logger.Information("Aluno deletado {AlunoId}", request.Id);
+                        await _redisCacheService.SetNewVersionAsync(RedisKeys.Version(RedisKeyPrefix));
                         return true;
                     }
                     catch (Exception ex)
