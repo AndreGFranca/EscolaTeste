@@ -187,6 +187,7 @@
     <Content Include="Infrastructure\Database\Scripts\2.CreateViewAlunosAtivos.sql" />
     <Content Include="Infrastructure\Database\Scripts\1.script-banco.sql" />
     <Content Include="Infrastructure\Database\Scripts\5.CreateEnrollmentProcedure.sql" />
+    <Content Include="Infrastructure\Database\Scripts\6.CreateRelatorioView.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
