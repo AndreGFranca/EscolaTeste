@@ -1,15 +1,14 @@
 ﻿using Dapper;
-using EscolaTeste.Application.Enrollment.Commands;
-using EscolaTeste.Application.Enrollment.DTOs;
+using EscolaTeste.Application.Enrollments.Commands;
+using EscolaTeste.Application.Enrollments.DTOs;
 using EscolaTeste.Domain.Interfaces;
 using MediatR;
 using Serilog;
 using System;
-using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EscolaTeste.Application.Enrollment.Handlers
+namespace EscolaTeste.Application.Enrollments.Handlers
 {
     public class CreateEnrollmentHandler : IRequestHandler<CreateEnrollmentCommand, CreateEnrollmentResult>
     {

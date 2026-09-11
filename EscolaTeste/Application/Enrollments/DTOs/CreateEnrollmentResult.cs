@@ -1,4 +1,4 @@
-﻿namespace EscolaTeste.Application.Enrollment.DTOs
+﻿namespace EscolaTeste.Application.Enrollments.DTOs
 {
     public class CreateEnrollmentResult
     {
