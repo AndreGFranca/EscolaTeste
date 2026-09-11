@@ -1,11 +1,11 @@
-﻿using EscolaTeste.Application.Classes.DTOs;
+﻿using EscolaTeste.Application.ClassGroup.DTOs;
 using EscolaTeste.Requests.Commom;
 using EscolaTeste.Responses.Commom;
 using MediatR;
 
 namespace EscolaTeste.Application.Classes.Queries
 {
-    public class GetClassesQuery : PaginetedRequest, IRequest<PaginetedResponse<ClassesViewModel>>
+    public class GetClassGroupQuery : PaginetedRequest, IRequest<PaginetedResponse<ClassGroupViewModel>>
     {
         public string Nome { get; set; }
         public string Periodo { get; set; }

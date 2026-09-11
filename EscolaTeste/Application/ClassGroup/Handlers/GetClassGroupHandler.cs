@@ -1,7 +1,6 @@
 ﻿using Dapper;
-using EscolaTeste.Application.Classes.DTOs;
 using EscolaTeste.Application.Classes.Queries;
-using EscolaTeste.Application.Students.DTOs;
+using EscolaTeste.Application.ClassGroup.DTOs;
 using EscolaTeste.Domain.Interfaces;
 using EscolaTeste.Responses.Commom;
 using MediatR;
@@ -11,9 +10,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EscolaTeste.Application.Class.Handlers
+namespace EscolaTeste.Application.ClassGroup.Handlers
 {
-    public class GetClassesHandler : IRequestHandler<GetClassesQuery, PaginetedResponse<ClassesViewModel>>
+    public class GetClassGroupHandler : IRequestHandler<GetClassGroupQuery, PaginetedResponse<ClassGroupViewModel>>
     {
 
         private readonly IDbConnectionFactory _connectionFactory;
@@ -34,14 +33,14 @@ namespace EscolaTeste.Application.Class.Handlers
             FROM dbo.vw_Turma
             WHERE 1=1
         ";
-        public GetClassesHandler(IDbConnectionFactory connectionFactory, ILogger logger)
+        public GetClassGroupHandler(IDbConnectionFactory connectionFactory, ILogger logger)
         {
             _connectionFactory = connectionFactory;
             _logger = logger;
         }
-        public async Task<PaginetedResponse<ClassesViewModel>> Handle(GetClassesQuery request, CancellationToken cancellationToken)
+        public async Task<PaginetedResponse<ClassGroupViewModel>> Handle(GetClassGroupQuery request, CancellationToken cancellationToken)
         {
-            var result = new PaginetedResponse<ClassesViewModel>
+            var result = new PaginetedResponse<ClassGroupViewModel>
             {
                 Pagina = request.Pagina,
                 TamanhoPagina = request.TamanhoPagina
@@ -98,7 +97,7 @@ namespace EscolaTeste.Application.Class.Handlers
                     using (var multi = await connection.QueryMultipleAsync(new CommandDefinition(fullSql.ToString(), parameters, cancellationToken: cancellationToken)))
                     {
                         result.TotalItens = await multi.ReadFirstAsync<int>();
-                        result.Itens = await multi.ReadAsync<ClassesViewModel>();
+                        result.Itens = await multi.ReadAsync<ClassGroupViewModel>();
                         result.TotalPaginas = (int)Math.Ceiling((double)result.TotalItens / request.TamanhoPagina);
                     }
 

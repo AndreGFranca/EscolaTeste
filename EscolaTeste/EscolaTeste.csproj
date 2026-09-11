@@ -189,9 +189,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Classes\DTOs\ClassesViewModel.cs" />
-    <Compile Include="Application\Classes\Handlers\GetClassesHandler.cs" />
-    <Compile Include="Application\Classes\Queries\GetClassesQuery.cs" />
+    <Compile Include="Application\ClassGroup\DTOs\ClassGroupViewModel.cs" />
+    <Compile Include="Application\ClassGroup\Handlers\GetClassGroupHandler.cs" />
+    <Compile Include="Application\ClassGroup\Queries\GetClassGroupQuery.cs" />
     <Compile Include="Application\Enrollment\Commands\CreateEnrollmentCommand.cs" />
     <Compile Include="Application\Enrollment\Handlers\CreateEnrollmentHandler.cs" />
     <Compile Include="Application\Students\Commands\DeleteStudentCommand.cs" />
@@ -206,7 +206,7 @@
     <Compile Include="Application\Students\Handlers\UpdateStudentHandler.cs" />
     <Compile Include="Application\Students\Queries\GetStudentByIdQuery.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\ClassController.cs" />
+    <Compile Include="Controllers\ClassGroupController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TesteController.cs" />
     <Compile Include="Domain\Entities\Student.cs" />
