@@ -15,7 +15,7 @@ namespace EscolaTeste.Controllers
         }
 
         [HttpGet]   
-        [Route(Name = "GetClasses")]
+        [Route(Name = "GetClassGroup")]
         public async Task<IHttpActionResult> Get([FromUri] GetClassGroupQuery request)
         {
             if (request is null)
