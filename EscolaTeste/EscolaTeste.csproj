@@ -187,6 +187,7 @@
     <Content Include="Infrastructure\Database\Scripts\2.CreateViewAlunosAtivos.sql" />
     <Content Include="Infrastructure\Database\Scripts\1.script-banco.sql" />
     <Content Include="Infrastructure\Database\Scripts\5.CreateEnrollmentProcedure.sql" />
+    <Content Include="Infrastructure\Database\Scripts\6.CreateRelatorioView.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +197,9 @@
     <Compile Include="Application\Enrollments\Commands\CreateEnrollmentCommand.cs" />
     <Compile Include="Application\Enrollments\DTOs\CreateEnrollmentResult.cs" />
     <Compile Include="Application\Enrollments\Handlers\CreateEnrollmentHandler.cs" />
+    <Compile Include="Application\Reports\DTOs\StudentPerClassGroupResult.cs" />
+    <Compile Include="Application\Reports\Handlers\GetStudentPerClassGroupHandler.cs" />
+    <Compile Include="Application\Reports\Queries\GetStudentPerClassGroupQuery.cs" />
     <Compile Include="Application\Students\Commands\DeleteStudentCommand.cs" />
     <Compile Include="Application\Students\DTOs\StudentViewModel.cs" />
     <Compile Include="Application\Students\Handlers\DeleteStudentHandler.cs" />
@@ -210,8 +214,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClassGroupController.cs" />
     <Compile Include="Controllers\EnrollmentController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
-    <Compile Include="Controllers\TesteController.cs" />
     <Compile Include="Domain\Entities\Student.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
