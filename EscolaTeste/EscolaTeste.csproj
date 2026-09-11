@@ -212,6 +212,7 @@
     <Compile Include="Application\ClassGroup\DTOs\ClassGroupViewModel.cs" />
     <Compile Include="Application\ClassGroup\Handlers\GetClassGroupHandler.cs" />
     <Compile Include="Application\ClassGroup\Queries\GetClassGroupQuery.cs" />
+    <Compile Include="Application\Commom\RedisAux.cs" />
     <Compile Include="Application\Enrollments\Commands\CreateEnrollmentCommand.cs" />
     <Compile Include="Application\Enrollments\DTOs\CreateEnrollmentResult.cs" />
     <Compile Include="Application\Enrollments\Handlers\CreateEnrollmentHandler.cs" />

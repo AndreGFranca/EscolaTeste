@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using EscolaTeste.Application.Commom;
 using EscolaTeste.Application.Students.DTOs;
 using EscolaTeste.Domain.Commom;
 using EscolaTeste.Domain.Interfaces;
@@ -54,10 +55,7 @@ namespace EscolaTeste.Application.Students.Handlers
 
             var filterJsonToText = JsonSerializer.Serialize(parameters);
 
-            var hash = Convert.ToBase64String(
-                                SHA256.Create().ComputeHash(
-                                    Encoding.UTF8.GetBytes(filterJsonToText))
-                               );
+            var hash = RedisAux.MakeHash(filterJsonToText);
 
             var version = await _redisCacheService.GetAsync<long>(RedisKeys.Version(RedisKeyPrefix));
             var cache = await _redisCacheService.GetAsync<PaginetedResponse<StudentViewModel>>(RedisKeys.Students(hash, version));
