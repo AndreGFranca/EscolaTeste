@@ -2,10 +2,10 @@
 {
     public class ClassGroupViewModel
     {
-        public int Id { get; }
-        public string Nome { get; }
-        public string Periodo { get; }
-        public int VagasTotal { get; }
-        public int VagasDisponiveis { get; }
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Periodo { get; set; }
+        public int VagasTotal { get; set; }
+        public int VagasDisponiveis { get; set; }
     }
 }

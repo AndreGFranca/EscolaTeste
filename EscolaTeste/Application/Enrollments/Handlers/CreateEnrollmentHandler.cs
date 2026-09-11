@@ -20,7 +20,7 @@ namespace EscolaTeste.Application.Enrollments.Handlers
         private readonly IRedisCacheService _redisCacheService;
         private readonly IEnumerable<string> _redisCacheKeys = new string[]
         {
-            "enrollment",
+            "report",
             "classgroup"
         };
         private const string _createEnrrolmentProc = @"
