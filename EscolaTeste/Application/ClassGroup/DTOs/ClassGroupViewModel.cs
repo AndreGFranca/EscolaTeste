@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace EscolaTeste.Application.Classes.DTOs
+﻿namespace EscolaTeste.Application.ClassGroup.DTOs
 {
-    public class ClassesViewModel
+    public class ClassGroupViewModel
     {
         public int Id { get; }
         public string Nome { get; }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EscolaTeste.Application.Students.Handlers
 {
-    public class RegisterStudentHandler : IRequestHandler<RegisterStudentCommand, int>
+    public class CreateStudentHandler : IRequestHandler<CreateStudentCommand, int>
     {
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly ILogger _logger;
@@ -21,13 +21,13 @@ namespace EscolaTeste.Application.Students.Handlers
             SELECT CAST(SCOPE_IDENTITY() as int);
         ";
 
-        public RegisterStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger)
+        public CreateStudentHandler(IDbConnectionFactory connectionFactory, ILogger logger)
         {
             _connectionFactory = connectionFactory;
             _logger = logger;
         }
 
-        public async Task<int> Handle(RegisterStudentCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {

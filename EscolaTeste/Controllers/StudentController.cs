@@ -46,7 +46,7 @@ namespace EscolaTeste.Controllers
 
         [HttpPost]
         [Route(Name = "PostStudent")]
-        public async Task<IHttpActionResult> Post([FromBody] RegisterStudentCommand command)
+        public async Task<IHttpActionResult> Post([FromBody] CreateStudentCommand command)
         {
             var newId = await _mediator.Send(command);
             return Created(Url.Route("GetStudentById", new { id = newId }), newId);

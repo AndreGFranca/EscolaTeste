@@ -6,20 +6,20 @@ using System.Web.Http;
 namespace EscolaTeste.Controllers
 {
     [RoutePrefix("api/turmas")]
-    public class ClassController : ApiController
+    public class ClassGroupController : ApiController
     {
         private readonly IMediator _mediator;
-        public ClassController(IMediator mediator)
+        public ClassGroupController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]   
-        [Route(Name = "GetClasses")]
-        public async Task<IHttpActionResult> Get([FromUri] GetClassesQuery request)
+        [Route(Name = "GetClassGroup")]
+        public async Task<IHttpActionResult> Get([FromUri] GetClassGroupQuery request)
         {
             if (request is null)
-                request = new GetClassesQuery();
+                request = new GetClassGroupQuery();
             var response = await _mediator.Send(request);
             if (response.TotalItens == 0)
                 return NotFound();

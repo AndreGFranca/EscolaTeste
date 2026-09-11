@@ -7,7 +7,7 @@ using System.Web;
 
 namespace EscolaTeste.Application.Students.Commands
 {
-    public class RegisterStudentCommand : IRequest<int>
+    public class CreateStudentCommand : IRequest<int>
     {
         [Required(ErrorMessage = "O nome é obrigatório")]
         [MaxLength(120, ErrorMessage = "O nome não pode exceder 120 caracteres")]
