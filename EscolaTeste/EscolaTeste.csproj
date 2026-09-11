@@ -197,6 +197,9 @@
     <Compile Include="Application\Enrollments\Commands\CreateEnrollmentCommand.cs" />
     <Compile Include="Application\Enrollments\DTOs\CreateEnrollmentResult.cs" />
     <Compile Include="Application\Enrollments\Handlers\CreateEnrollmentHandler.cs" />
+    <Compile Include="Application\Reports\DTOs\StudentPerClassGroupResult.cs" />
+    <Compile Include="Application\Reports\Handlers\GetStudentPerClassGroupHandler.cs" />
+    <Compile Include="Application\Reports\Queries\GetStudentPerClassGroupQuery.cs" />
     <Compile Include="Application\Students\Commands\DeleteStudentCommand.cs" />
     <Compile Include="Application\Students\DTOs\StudentViewModel.cs" />
     <Compile Include="Application\Students\Handlers\DeleteStudentHandler.cs" />
@@ -211,6 +214,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ClassGroupController.cs" />
     <Compile Include="Controllers\EnrollmentController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TesteController.cs" />
     <Compile Include="Domain\Entities\Student.cs" />
