@@ -4,6 +4,7 @@ using EscolaTeste.Application.Students.Queries;
 using EscolaTeste.Filters;
 using EscolaTeste.Requests;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -71,9 +72,17 @@ namespace EscolaTeste.Controllers
             }
             return Ok();
         }
-
-        public void Delete(int id)
+        [HttpDelete]
+        [Route("{id:int}", Name = "DeleteStudent")]
+        public async Task<IHttpActionResult> Delete(int id)
         {
+            var command = new DeleteStudentCommand { Id = id };
+            var deleted = await _mediator.Send(command);
+            if (!deleted)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
     }
 }
