@@ -216,7 +216,6 @@
     <Compile Include="Controllers\EnrollmentController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
-    <Compile Include="Controllers\TesteController.cs" />
     <Compile Include="Domain\Entities\Student.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
