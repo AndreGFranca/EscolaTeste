@@ -192,6 +192,8 @@
     <Compile Include="Application\Classes\DTOs\ClassesViewModel.cs" />
     <Compile Include="Application\Classes\Handlers\GetClassesHandler.cs" />
     <Compile Include="Application\Classes\Queries\GetClassesQuery.cs" />
+    <Compile Include="Application\Enrollment\Commands\CreateEnrollmentCommand.cs" />
+    <Compile Include="Application\Enrollment\Handlers\CreateEnrollmentHandler.cs" />
     <Compile Include="Application\Students\Commands\DeleteStudentCommand.cs" />
     <Compile Include="Application\Students\DTOs\StudentViewModel.cs" />
     <Compile Include="Application\Students\Handlers\DeleteStudentHandler.cs" />
@@ -231,7 +233,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Application\Enrollment\Commands\" />
     <Folder Include="App_Data\" />
     <Folder Include="Infrastructure\Interfaces\" />
     <Folder Include="Models\" />
