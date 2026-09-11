@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using EscolaTeste.Application.Enrollment.Commands;
-using EscolaTeste.Application.Students.Commands;
+using EscolaTeste.Application.Enrollment.DTOs;
 using EscolaTeste.Domain.Interfaces;
 using MediatR;
 using Serilog;
@@ -11,15 +11,12 @@ using System.Threading.Tasks;
 
 namespace EscolaTeste.Application.Enrollment.Handlers
 {
-    public class CreateEnrollmentHandler : IRequestHandler<CreateEnrollmentCommand, int>
+    public class CreateEnrollmentHandler : IRequestHandler<CreateEnrollmentCommand, CreateEnrollmentResult>
     {
         private readonly IDbConnectionFactory _connectionFactory;
         private readonly ILogger _logger;
-        private const string _insertEnrollmentQuery = @"
-            INSERT INTO dbo.Matricula (AlunoId, TurmaId)
-            VALUES (@AlunoId, @TurmaId);
-
-            SELECT CAST(SCOPE_IDENTITY() as int);
+        private const string _createEnrrolmentProc = @"
+            EXECUTE dbo.sp_CreateEnrollment @AlunoId, @TurmaId;
         ";
 
         public CreateEnrollmentHandler(IDbConnectionFactory connectionFactory, ILogger logger)
@@ -28,39 +25,37 @@ namespace EscolaTeste.Application.Enrollment.Handlers
             _logger = logger;
         }
 
-        public async Task<int> Handle(CreateEnrollmentCommand request, CancellationToken cancellationToken)
+        public async Task<CreateEnrollmentResult> Handle(CreateEnrollmentCommand request, CancellationToken cancellationToken)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
-                connection.Open();
-                var parameters = new
+            connection.Open();
+            var parameters = new
+            {
+                AlunoId = request.AlunoId,
+                TurmaId = request.TurmaId
+            };
+                try
                 {
-                    AlunoId = request.AlunoId,
-                    TurmaId = request.TurmaId
-                };
-                using (var tran = connection.BeginTransaction(IsolationLevel.ReadCommitted))
-                {
-                    try
-                    {
 
-                        var newId = await connection.ExecuteScalarAsync<int>(new CommandDefinition(
-                            _insertEnrollmentQuery,
-                            parameters,
-                            tran,
-                            cancellationToken: cancellationToken));
-                        if (newId <= 0)
-                            throw new Exception("Registro não inserido.");
-                        tran.Commit();
-                        _logger.Information("Nova matrícula criada com ID {newId}", newId);
-                        return newId;
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.Information(ex, "Erro ao criar a matrícula");
-                        tran.Rollback();
-                        throw;
-                    }
+                    var newItem = await connection.QuerySingleOrDefaultAsync<CreateEnrollmentResult>(new CommandDefinition(
+                        _createEnrrolmentProc,
+                        parameters,
+                        cancellationToken: cancellationToken));
+                    if (newItem == null)
+                        throw new Exception("Registro não inserido.");
+                    if(newItem.Success)
+                        _logger.Information("Nova matrícula criada com ID {newId}", newItem.EnrollmentId);
+                    else
+                        _logger.Information("Falha ao criar matrícula: {message}", newItem.Message);
+                    return newItem;
                 }
+                catch (Exception ex)
+                {
+                    _logger.Information(ex, "Erro ao criar a matrícula");
+                    throw;
+                }
+                
             }
         }
     }

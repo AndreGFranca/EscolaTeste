@@ -194,6 +194,7 @@
     <Compile Include="Application\ClassGroup\Handlers\GetClassGroupHandler.cs" />
     <Compile Include="Application\ClassGroup\Queries\GetClassGroupQuery.cs" />
     <Compile Include="Application\Enrollment\Commands\CreateEnrollmentCommand.cs" />
+    <Compile Include="Application\Enrollment\DTOs\CreateEnrollmentResult.cs" />
     <Compile Include="Application\Enrollment\Handlers\CreateEnrollmentHandler.cs" />
     <Compile Include="Application\Students\Commands\DeleteStudentCommand.cs" />
     <Compile Include="Application\Students\DTOs\StudentViewModel.cs" />
