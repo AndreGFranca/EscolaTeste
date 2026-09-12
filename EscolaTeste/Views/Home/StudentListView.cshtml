@@ -1,0 +1,137 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Lista de Alunos</title>
+</head>
+
+<body>
+    <h2>Alunos</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Data de nascimento</th>
+                <th>Data de cadastro</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentsTableBody">
+            <tr>
+                <td colspan="5">
+                    Carregando...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+
+            async function loadStudents() {
+
+                try {
+
+                    const response = await fetch('/api/alunos');
+
+                    if (!response.ok) {
+                        throw new Error('Erro ao consultar a API.');
+                    }
+
+                    const data = await response.json();
+
+                    // Os alunos estão dentro de "Itens"
+                    const students = data.Itens;
+
+                    const tbody =
+                        document.getElementById('studentsTableBody');
+
+                    tbody.innerHTML = '';
+
+                    if (!students || students.length === 0) {
+
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="5">
+                                    Nenhum aluno encontrado.
+                                </td>
+                            </tr>
+                        `;
+
+                        return;
+                    }
+
+                    students.forEach(student => {
+
+                        const row = document.createElement('tr');
+
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = student.Nome;
+
+                        const emailCell = document.createElement('td');
+                        emailCell.textContent = student.Email;
+
+                        const birthDateCell = document.createElement('td');
+                        birthDateCell.textContent =
+                            formatDate(student.DataNascimento);
+
+                        const registrationDateCell = document.createElement('td');
+                        registrationDateCell.textContent =
+                            formatDateTime(student.DataCadastro);
+
+                        row.appendChild(nameCell);
+                        row.appendChild(emailCell);
+                        row.appendChild(birthDateCell);
+                        row.appendChild(registrationDateCell);
+
+                        tbody.appendChild(row);
+                    });
+
+                }
+                catch (error) {
+
+                    console.error(error);
+
+                    document.getElementById('studentsTableBody').innerHTML = `
+                        <tr>
+                            <td colspan="5">
+                                Não foi possível carregar os alunos.
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+
+            function formatDate(dateString) {
+
+                if (!dateString)
+                    return '';
+
+                const date = new Date(dateString);
+
+                return date.toLocaleDateString('pt-BR');
+            }
+
+            function formatDateTime(dateString) {
+
+                if (!dateString)
+                    return '';
+
+                const date = new Date(dateString);
+
+                return date.toLocaleString('pt-BR');
+            }
+
+            loadStudents();
+
+    </script>
+
+</body>
+</html>

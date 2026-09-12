@@ -1,3 +1,4 @@
+using EscolaTeste.App_Start;
 using EscolaTeste.Infrastructure.Configuration;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace EscolaTeste
         {
             DependencyInjectionConfig.Register();
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
     }
 }
