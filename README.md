@@ -188,7 +188,14 @@ Você pode utilizar ferramentas como **Postman**, **Insomnia** ou o próprio Nav
 
 ---
 
-## 5. Executando os Testes Automatizados
+## 5.1 Executando a aplicação
+Para rodár:
+1. Abra a solução no Visual Studio.
+2. defina o projeto **EscolaTeste** como padrão
+3. Compile
+4. após compilar **ctrl + F5** para iniciar
+
+## 5.2 Executando os Testes Automatizados
 
 O projeto conta com uma arquitetura de testes robusta no ecossistema do .NET Framework 4.8.
 
