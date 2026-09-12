@@ -83,7 +83,7 @@ namespace EscolaTeste.Application.Students.Handlers
             fullSql.Append(BaseSql)
                 .Append(filtroSql)
                 .Append(@"
-                ORDER BY DataCadastro DESC 
+                ORDER BY Nome ASC 
                 OFFSET @Offset ROWS
                 FETCH NEXT @PageSize ROWS ONLY;");
 
