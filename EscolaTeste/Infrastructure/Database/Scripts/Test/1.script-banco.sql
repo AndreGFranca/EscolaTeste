@@ -1,6 +1,3 @@
--- Script de criacao do banco para o teste pratico
--- SQL Server (qualquer edicao)
-
 IF DB_ID('EscolaTesteIntegrationTests') IS NULL
     CREATE DATABASE EscolaTesteIntegrationTests;
 GO
