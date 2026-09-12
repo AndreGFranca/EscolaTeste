@@ -3,6 +3,7 @@ using Autofac.Features.Variance;
 using Autofac.Integration.WebApi;
 using EscolaTeste.Domain.Interfaces;
 using EscolaTeste.Infrastructure.Database;
+using EscolaTeste.Infrastructure.Repositories;
 using EscolaTeste.Infrastructure.Services;
 using MediatR;
 using Serilog;
@@ -78,6 +79,11 @@ namespace EscolaTeste.Infrastructure.Configuration
                    .As<IRedisCacheService>()
                    .SingleInstance();
 
+            #endregion
+            #region Repositories
+            builder.RegisterType<EnrollmentRepository>()
+                .As<IEnrollmentRepository>()
+                .InstancePerRequest();
             #endregion
             var container = builder.Build();
 
